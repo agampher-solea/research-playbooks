@@ -10,7 +10,6 @@
     - "{{ vars_dir_common }}/vars_1.1.0.yml"
     - "{{ vars_dir_local }}/vars.yml"
     - "{{ vars_dir_local }}/map-common.yml"
-    - "{{ sec_dir_local }}/secret-vars.yml"
 
   tasks:
   # Pre-check
