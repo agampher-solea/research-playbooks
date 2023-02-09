@@ -1,0 +1,65 @@
+# kubectl resources
+kube_resources:
+  - "{{ deployment }}"
+  - "{{ service }}"
+  - "{{ ingressroute }}"
+
+deployment: |
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: {{ app }}
+    namespace: {{ ns }}
+    labels:
+      app: {{ app }}
+  spec:
+    template:
+      metadata:
+        name: {{ app }}
+        namespace: {{ ns }}
+        labels:
+          app: {{ app }}
+      spec:
+        containers:
+        - name: {{ app }}-1
+          image: {{ image }}
+          resources:
+            limits:
+              memory: "{{ resource_limit_mem }}"
+              cpu: "{{ resource_limit_cpu }}"
+    replicas: "{{ replica_count }}"
+    selector:
+      matchLabels:
+        app: {{ app }}
+
+service: |
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: {{ app }}
+  spec:
+    selector:
+      app.kubernetes.io/instance: {{ app }}
+      app.kubernetes.io/name: {{ app }}
+    ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+    type: ClusterIP
+
+ingressroute: |
+  apiVersion: traefik.containo.us/v1alpha1
+  kind: IngressRoute
+  metadata:
+    name: {{ app }}
+    namespace: {{ ns }}
+  spec:
+    entryPoints:
+    - web
+    routes:
+    - kind: Rule
+      match: Host(\`{{ routehost }}\`) && PathPrefix(\`/\`)
+      services:
+      - name: {{ app }}
+        port: 80

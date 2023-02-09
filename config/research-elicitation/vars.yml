@@ -1,0 +1,32 @@
+## general
+app: "research-elicitation"
+config_dir: "{{ config_dir_local }}" # required by kube-apply
+
+## namespace
+ns: "research"
+# ns_names:
+#   - ""
+
+## git
+# git_url: "github.com/SoleaEnergy"
+# git_path_remote: "{{ remote_dir }}/git"
+
+## helm
+# helm_repo_name: ""
+# helm_repo_url: ""
+# helm_secret_varspath_list:
+#   - ""
+# helm_chart_list: # Deployed in order.
+#   - ""
+
+## helm values
+# values_path: "{{ config_dir_local }}/charts"
+# values_path_remote: "{{ git_path_remote }}/config"
+# values_cronjob_path_remote: "{{ values_path_remote }}"
+
+## Custom
+docker_root: "harbor.corp.soleaenergy.com/research/"
+image: "{{ docker_root }}{{ app }}:{{ branch }}"
+resource_limit_cpu: "500m"
+resource_limit_mem: "1Gi"
+replica_count: "2"

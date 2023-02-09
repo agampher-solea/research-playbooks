@@ -1,0 +1,8 @@
+## map common tasks
+# vars
+vars_req_vars: req-vars_1.0.0.yml
+# deploy
+deploy_kube_apply: kube-apply_1.1.0.yml
+deploy_namespace_k8s: namespace-k8s_1.0.0.yml
+# maint
+# remove
