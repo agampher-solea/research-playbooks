@@ -1,0 +1,50 @@
+---
+- name: Deploy App
+  hosts: all
+  become: false
+  remote_user: kuser
+  vars:
+    vars_dir_local: "{{ playbook_dir }}/config/{{ git_repo_name }}"
+    vars_dir_common: "{{ playbook_dir }}/../ansible-common/config/vars"
+  vars_files:
+    - "{{ vars_dir_common }}/vars_1.1.0.yml"
+    - "{{ vars_dir_local }}/vars.yml"
+    - "{{ vars_dir_local }}/map-common.yml"
+    - "{{ sec_dir_local }}/secret-vars.yml"
+
+  tasks:
+  # Pre-check
+    - name: Storing ansible-common task status
+      stat:
+        path: "{{ root_common }}"
+      register: root_common_status
+      delegate_to: localhost
+
+    - name: Ending play if ansible-common tasks are not available
+      when: not root_common_status.stat.exists
+      fail:
+        msg: "Please ensure playbook access to ansible-common tasks."
+
+  # Variables
+    - name: Defining required variables
+      set_fact:
+        req_var_list:
+          - branch
+          - git_repo_name
+          - routehost
+
+    - name: Importing variable tasks
+      include_tasks: "{{ task_vars_dir_common }}/{{ vtask_item }}"
+      with_items:
+        - "{{ vars_req_vars }}"
+      loop_control:
+        loop_var: vtask_item
+
+  # Deployment
+    - name: Importing tasks
+      include_tasks: "{{ task_deploy_dir_common }}/{{ task_item }}"
+      with_items:
+        - "{{ deploy_namespace_k8s }}"
+        - "{{ deploy_kube_apply }}"
+      loop_control:
+        loop_var: task_item
