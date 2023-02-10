@@ -30,6 +30,7 @@
         req_var_list:
           - branch
           - git_repo_name
+          - image_tag
           - routehost
 
     - name: Importing variable tasks

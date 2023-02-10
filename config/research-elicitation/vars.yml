@@ -26,7 +26,7 @@ ns_names:
 
 ## Custom
 docker_root: "harbor.corp.soleaenergy.com/research/"
-image: "{{ docker_root }}{{ app }}:{{ branch }}"
+image: "{{ docker_root }}{{ app }}:{{ image_tag }}"
 resource_limit_cpu: "500m"
 resource_limit_mem: "1Gi"
 replica_count: "2"
