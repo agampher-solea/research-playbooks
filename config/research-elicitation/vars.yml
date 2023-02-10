@@ -4,8 +4,8 @@ config_dir: "{{ config_dir_local }}" # required by kube-apply
 
 ## namespace
 ns: "research"
-# ns_names:
-#   - ""
+ns_names:
+  - "research"
 
 ## git
 # git_url: "github.com/SoleaEnergy"

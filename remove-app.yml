@@ -1,5 +1,5 @@
 ---
-- name: Deploy App
+- name: Remove App
   hosts: all
   become: false
   remote_user: kuser
@@ -41,9 +41,8 @@
 
   # Deployment
     - name: Importing tasks
-      include_tasks: "{{ task_deploy_dir_common }}/{{ task_item }}"
+      include_tasks: "{{ task_remove_dir_common }}/{{ task_item }}"
       with_items:
-        - "{{ deploy_namespace_k8s }}"
-        - "{{ deploy_kube_apply }}"
+        - "{{ remove_kube_remove }}"
       loop_control:
         loop_var: task_item
