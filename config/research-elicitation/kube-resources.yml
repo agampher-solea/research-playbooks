@@ -15,19 +15,18 @@ deployment: |
   spec:
     template:
       metadata:
-        name: {{ app }}
-        namespace: {{ ns }}
         labels:
           app: {{ app }}
       spec:
+        # serviceAccountName: {{ app }}-sa
         containers:
         - name: {{ app }}-1
           image: {{ image }}
           resources:
             limits:
-              memory: "{{ resource_limit_mem }}"
-              cpu: "{{ resource_limit_cpu }}"
-    replicas: "{{ replica_count }}"
+              memory: {{ resource_limit_mem }}
+              cpu: {{ resource_limit_cpu }}
+    replicas: {{ replica_count }}
     selector:
       matchLabels:
         app: {{ app }}
@@ -37,15 +36,15 @@ service: |
   kind: Service
   metadata:
     name: {{ app }}
+    namespace: {{ ns }}
   spec:
     selector:
-      app.kubernetes.io/instance: {{ app }}
-      app.kubernetes.io/name: {{ app }}
+      app: {{ app }}
     ports:
-    - name: http
+    - name: quart
       protocol: TCP
-      port: 80
-      targetPort: http
+      port: 5000
+      targetPort: 5000
     type: ClusterIP
 
 ingressroute: |
@@ -62,4 +61,4 @@ ingressroute: |
       match: Host(\`{{ routehost }}\`) && PathPrefix(\`/\`)
       services:
       - name: {{ app }}
-        port: 80
+        port: 5000
