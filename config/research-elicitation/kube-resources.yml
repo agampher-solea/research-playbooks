@@ -22,6 +22,22 @@ deployment: |
         containers:
         - name: {{ app }}-1
           image: {{ image }}
+          env:
+          - name: SNOWFLAKE_SOLEA_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ app }}
+                key: snowflake_solea_username
+          - name: SNOWFLAKE_SOLEA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ app }}
+                key: snowflake_solea_password
+          - name: SNOWFLAKE_SOLEA_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ app }}
+                key: snowflake_solea_host
           resources:
             limits:
               memory: {{ resource_limit_mem }}
