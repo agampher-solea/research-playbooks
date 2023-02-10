@@ -6,3 +6,4 @@ deploy_kube_apply: kube-apply_1.1.0.yml
 deploy_namespace_k8s: namespace-k8s_1.0.0.yml
 # maint
 # remove
+remove_kube_remove: kube-remove_1.1.0.yml
