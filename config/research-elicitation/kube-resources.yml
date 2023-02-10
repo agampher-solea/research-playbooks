@@ -18,10 +18,10 @@ deployment: |
         labels:
           app: {{ app }}
       spec:
-        # serviceAccountName: {{ app }}-sa
         containers:
         - name: {{ app }}-1
           image: {{ image }}
+          imagePullPolicy: Always
           env:
           - name: SNOWFLAKE_SOLEA_USERNAME
             valueFrom:
